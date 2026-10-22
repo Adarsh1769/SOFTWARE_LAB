@@ -1,5 +1,60 @@
 # AI Code Assistant Lab: GitHub Copilot and Code Comparison
 
+## Practical 5: AI-generated unit test cases (Python)
+
+This practical adds three basic validation functions and tests them with
+Python's built-in `unittest` framework. The test module separates suggested
+AI-generated examples from additional manually selected boundary cases.
+
+### Step 3 - `validators.py`
+
+Open `practical-5-python/validators.py`. It provides:
+
+- `is_valid_username`: accepts 3-20 ASCII letters, digits, or underscores.
+- `is_valid_age`: accepts integer ages from 0 through 120; booleans are not
+  treated as ages.
+- `is_valid_email`: checks a basic email format. It does not verify that a
+  mailbox exists or implement every email standard.
+
+### Step 4/5 - AI-generated tests plus manual tests
+
+Open `practical-5-python/test_validators.py`. The
+`AIGeneratedValidatorTests` class contains representative cases suggested by
+an AI assistant. `ManualValidatorTests` adds boundary, malformed-input, and
+type-checking cases.
+
+To demonstrate AI test generation, ask Copilot Chat:
+
+> Generate Python unittest test cases for validators.py. Cover valid and
+> invalid usernames, ages, and basic email addresses; include length/range
+> boundaries, malformed values, and wrong input types. Do not modify the
+> validator implementation. Keep the test module discoverable by unittest.
+
+Review the suggestions and compare them to the cases already in
+`test_validators.py`. The committed file includes runnable example tests so
+the practical can be executed even before using Copilot.
+
+### Step 6/9 - Test execution report
+
+From the lab root, run:
+
+```powershell
+py -3 -m unittest discover -s practical-5-python -p test_validators.py -v
+```
+
+Expected report:
+
+```text
+Ran 10 tests
+OK
+```
+
+The tests cover valid and invalid values for all three validators, username
+length boundaries, inclusive age boundaries, malformed email strings, and
+wrong types. On this workspace, all 10 tests passed. Capture the
+`test_validators.py` cases and the terminal test report using **Win+Shift+S**
+for the lab record.
+
 ## Practical 4: AI-assisted code refactoring and auto-documentation (Python)
 
 This practical preserves a small legacy order-summary program and refactors it

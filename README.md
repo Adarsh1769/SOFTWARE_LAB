@@ -1,5 +1,120 @@
 # AI Code Assistant Lab: GitHub Copilot and Code Comparison
 
+## Practical 3: AI-assisted debugging (Java)
+
+The original practical asks for `.py` files, but this repository's practicals
+are being completed in Java. The equivalent Java source files below preserve
+the same debugging steps and outputs.
+
+### Bug 1 - `Buggy.java` (Step 1)
+
+Open `practical-3-java/Buggy.java`. It tries to sum `{1, 2, 3, 4, 5}`, but
+the loop condition is `index <= values.length`.
+
+### Step 2/3 - Run and traceback
+
+From the lab root in the VS Code PowerShell terminal:
+
+```powershell
+Set-Location practical-3-java
+javac Buggy.java Fixed.java Buggy2.java Fixed2.java Practical3Test.java
+java Buggy
+```
+
+The program prints an `ArrayIndexOutOfBoundsException` stack trace. Java's
+exact line number can vary, but the exception points to the array access in
+`Buggy.sum`.
+
+### AI explanation of the root cause
+
+Ask Copilot Chat:
+
+> Explain why Buggy.java throws ArrayIndexOutOfBoundsException. Trace the
+> loop values for an array of length 5, identify the first invalid index, and
+> propose the smallest correct change. Do not change the intended sum behavior.
+
+The array has valid indexes 0 through 4. With `index <= values.length`, the
+loop also runs at index 5, so `values[5]` throws. Use `index < values.length`
+so the final valid index is 4.
+
+### Step 6/7 - `Fixed.java` and output
+
+Run:
+
+```powershell
+java Fixed
+```
+
+Expected output:
+
+```text
+Sum: 15
+```
+
+### Bug 2 - wrong operator (Steps 8 and 9): `Buggy2.java`
+
+`Buggy2.java` evaluates a score of 75 using `score <= PASS_MARK`. That
+comparison is reversed: a score greater than or equal to 40 should pass.
+Run the buggy example:
+
+```powershell
+java Buggy2
+```
+
+Expected buggy output:
+
+```text
+Score: 75
+Expected result: PASS
+Actual result: FAIL
+```
+
+Ask Copilot Chat:
+
+> Debug Buggy2.java. For a passing mark of 40, determine why score 75 is
+> classified as FAIL. Identify the incorrect comparison operator, suggest
+> the smallest fix, and keep the pass mark inclusive.
+
+### `Fixed2.java` and output
+
+The corrected comparison is `score >= PASS_MARK`. Run:
+
+```powershell
+java Fixed2
+```
+
+Expected output:
+
+```text
+Score: 75
+Expected result: PASS
+Actual result: PASS
+```
+
+### Verify both fixes
+
+Run the dependency-free checks:
+
+```powershell
+java Practical3Test
+```
+
+Expected output:
+
+```text
+Passed 7 debugging checks.
+```
+
+The checks confirm the first bug throws as expected, the array fix returns 15,
+the wrong operator reproduces the incorrect classification, and the corrected
+operator handles below, at, and above the pass mark.
+
+For print evidence, capture `Buggy.java`, its terminal stack trace, Copilot's
+root-cause explanation, `Fixed.java` with its output, `Buggy2.java`'s wrong
+result, and `Fixed2.java` plus the passing verification output. Use
+**Win+Shift+S** for screenshots. Commit and push the practical with the other
+lab files in the `SOFTWARE_LAB` repository.
+
 ## Practical 2: AI-assisted code writing and optimization (Java)
 
 This practical compares two Java prime-number checkers. `BasicPrimeChecker`

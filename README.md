@@ -8,6 +8,30 @@ is the AI-assisted candidate: it handles even numbers separately and checks
 only odd divisors up to the square root. Both return the same result object,
 which also counts divisor checks.
 
+### AI explanation of complexity
+
+Ask Copilot Chat to explain the algorithms in the practical using this prompt:
+
+> Explain the time and extra-space complexity of BasicPrimeChecker and
+> OptimizedPrimeChecker in this project. Give best- and worst-case behavior,
+> explain why trial division only needs to reach the square root, and relate
+> the explanation to divisor counts without claiming benchmark timings prove
+> Big-O complexity.
+
+For an input `n`, the basic checker can test every integer from 2 through
+`n - 1`. A prime has no early divisor to stop the loop, so its worst-case time
+is **O(n)**; it uses **O(1)** extra space.
+
+The optimized checker handles 2 and even values separately, then tests odd
+divisors only while `divisor <= n / divisor`. If `n` is composite, at least
+one factor must be at most its square root; otherwise both factors would be
+greater than the square root and their product would exceed `n`. Thus it needs
+at most about `sqrt(n) / 2` odd-divisor checks: **O(sqrt(n))** worst-case time
+and **O(1)** extra space. Division in the loop condition avoids the
+overflow-prone multiplication in `divisor * divisor <= n`. Composite values
+with small factors can return earlier. The prime-number practical's deterministic
+divisor counts show the algorithmic improvement independently of machine speed.
+
 The optimized candidate in the repository is a working example. To perform
 the AI-assisted part with GitHub Copilot, open
 `practical-2-java/OptimizedPrimeChecker.java` in VS Code and ask Copilot Chat:
@@ -38,9 +62,25 @@ for the optimized checker, and a percentage reduction. With the included test
 cases, the checks should report `Passed 5032 Java checks.` No third-party
 dependencies are required.
 
+### Execution-time comparison
+
+To time the Java implementations, run the Python launcher from the lab folder:
+
+```powershell
+py -3 practical-2-java/compare_timing.py
+```
+
+The script compiles the Java benchmark into a temporary folder and executes
+it; it does not time Python versions of the algorithms. The Java benchmark
+warms up both implementations, alternates measurement order, takes the median
+of seven batches (five calls per batch), and reports milliseconds per call
+and measured speedup. Compilation is excluded. Timings vary with the CPU,
+JVM, and system load, so use the divisor-check results as the stable measure
+and treat elapsed time as a practical observation, not a complexity proof.
+
 For print evidence, capture Copilot Chat showing the optimization prompt and
-code, the terminal comparison including the reduction, and the test output.
-Use **Win+Shift+S** to save screenshots.
+code, the terminal comparison including the reduction, the Java timing
+comparison, and the test output. Use **Win+Shift+S** to save screenshots.
 
 ## Java version
 

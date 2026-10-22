@@ -1,5 +1,47 @@
 # AI Code Assistant Lab: GitHub Copilot and Code Comparison
 
+## Practical 2: AI-assisted code writing and optimization (Java)
+
+This practical compares two Java prime-number checkers. `BasicPrimeChecker`
+tests every divisor from 2 to one less than the input. `OptimizedPrimeChecker`
+is the AI-assisted candidate: it handles even numbers separately and checks
+only odd divisors up to the square root. Both return the same result object,
+which also counts divisor checks.
+
+The optimized candidate in the repository is a working example. To perform
+the AI-assisted part with GitHub Copilot, open
+`practical-2-java/OptimizedPrimeChecker.java` in VS Code and ask Copilot Chat:
+
+> Optimize this Java prime-number checker for fewer divisor checks. Keep the
+> public class name OptimizedPrimeChecker and the static method signature
+> `CheckResult check(int number)`. Return false for numbers below 2, handle 2
+> and even numbers efficiently, and only test odd divisors up to the square
+> root without overflow-prone multiplication. Count each divisibility check
+> in the returned CheckResult. Keep it correct for all int values.
+
+Review Copilot's suggestion, apply it to the file, then run the same commands
+below. Record whether it remains correct and how the divisor-check counts
+compare. This provides a repeatable efficiency measure; elapsed time is not
+used because it varies with the machine and system load.
+
+Open the VS Code terminal in the lab folder and run:
+
+```powershell
+Set-Location practical-2-java
+javac CheckResult.java BasicPrimeChecker.java OptimizedPrimeChecker.java Practical2Main.java Practical2Test.java
+java Practical2Main
+java Practical2Test
+```
+
+The comparison should show `Results match: YES`, fewer total divisor checks
+for the optimized checker, and a percentage reduction. With the included test
+cases, the checks should report `Passed 5032 Java checks.` No third-party
+dependencies are required.
+
+For print evidence, capture Copilot Chat showing the optimization prompt and
+code, the terminal comparison including the reduction, and the test output.
+Use **Win+Shift+S** to save screenshots.
+
 ## Java version
 
 This lab also includes a Java version in `java-lab/`. It compares an

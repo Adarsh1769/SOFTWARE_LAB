@@ -1,5 +1,90 @@
 # AI Code Assistant Lab: GitHub Copilot and Code Comparison
 
+## Practical 6: AI-based static code analysis and vulnerability scanning (Python)
+
+This isolated sample uses Bandit to scan a deliberately unsafe calculator,
+then scans a corrected version and runs tests. The unsafe file is for static
+analysis only: never pass untrusted input to `app.py`.
+
+### Step 3 - `app.py` (before)
+
+Open `practical-6-python/app.py`. The `calculate` function calls Python's
+`eval` on its expression. This sample uses a harmless constant when run, but
+the function itself must not be used with user-controlled text.
+
+From the lab root, run the before-scan:
+
+```powershell
+py -3 -m pip install bandit
+Set-Location practical-6-python
+py -3 -m bandit -f txt app.py
+```
+
+### Step 4 - Vulnerability report (before)
+
+Bandit 1.9.4 reports one issue:
+
+```text
+Issue: [B307:blacklist] Use of possibly insecure function
+Severity: Medium   Confidence: High
+Location: app.py:6:11
+Total issues: Medium 1, High 0, Low 0
+```
+
+Bandit's scan exits with status 1 when it finds this issue; that is an expected
+scanner result, not a failure to run the tool.
+
+### Step 5 - AI explanation
+
+Ask Copilot Chat:
+
+> Explain Bandit's B307 finding for the eval call in app.py. Describe why
+> evaluating a string as Python code is unsafe when the string can be
+> user-controlled. Suggest a fix for a calculator that accepts only numeric
+> literals and the operators +, -, *, and /; preserve normal arithmetic and
+> reject all other syntax. Do not suppress the Bandit warning.
+
+`eval` parses and executes general Python expressions, not just arithmetic.
+If an expression comes from an untrusted source, it can perform actions beyond
+calculation. Bandit flags the dangerous function call but does not prove that
+the current constant sample input is attacker-controlled.
+
+### Step 6 - AI-suggested fix (after)
+
+Review `practical-6-python/fixed_app.py`. It parses input as an AST and
+evaluates only numeric literals and explicitly allowlisted arithmetic
+operators. It limits expression length, syntax-tree size, and result magnitude.
+Unsupported syntax such as names, function calls, and exponentiation is rejected.
+No `eval` call or warning suppression is used.
+
+### Step 7 - Re-scan report (after)
+
+From the `practical-6-python` directory, run:
+
+```powershell
+py -3 -m bandit -f txt fixed_app.py
+```
+
+Verified Bandit 1.9.4 result:
+
+```text
+Test results:
+    No issues identified.
+Total issues: Medium 0, High 0, Low 0
+```
+
+Verify the fix with the tests:
+
+```powershell
+py -3 -m unittest discover -s . -p test_fixed_app.py -v
+```
+
+The test report should show `Ran 6 tests` and `OK`. The tests check supported
+arithmetic and rejection of unsupported expressions, including a code-shaped
+string (which is parsed but never executed). For the lab record, capture the
+before-scan finding, Copilot's explanation, the fixed implementation, the
+clean re-scan, and test results with **Win+Shift+S**.
+
 ## Practical 5: AI-generated unit test cases (Python)
 
 This practical adds three basic validation functions and tests them with

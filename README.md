@@ -1,5 +1,69 @@
 # AI Code Assistant Lab: GitHub Copilot and Code Comparison
 
+## Practical 4: AI-assisted code refactoring and auto-documentation (Python)
+
+This practical preserves a small legacy order-summary program and refactors it
+into documented, readable Python while keeping its existing output behavior.
+
+### Step 1/2 - `messy.py` (original)
+
+Open `practical-4-python/messy.py`. It summarizes order rows, but uses
+single-letter variable names, nested conditions, and no function documentation.
+It ignores rows with fewer than three fields, non-positive quantities, or
+negative prices. A 10% discount applies when a line total is strictly greater
+than 100.
+
+Run the original from the lab root:
+
+```powershell
+py -3 practical-4-python/messy.py
+```
+
+Expected output:
+
+```text
+{'total': 185.0, 'units': 3, 'average': 61.67}
+```
+
+### Step 3-5 - AI-refactored `clean.py`
+
+Open `practical-4-python/clean.py` in VS Code and use Copilot Chat with this
+prompt:
+
+> Refactor messy.py into clean.py. Preserve its behavior exactly, including
+> ignored malformed rows, quantity/price rules, the strict greater-than-100
+> discount threshold, rounding, result dictionary keys, and empty-input
+> behavior. Improve naming and structure, add type hints and useful
+> docstrings/comments, and do not add third-party dependencies.
+
+The included `clean.py` is a runnable refactored example. It names the pricing
+rules, extracts line-total calculation into a helper, adds a documented public
+function, and keeps the legacy rules. The `compare_refactor.py` program checks
+both versions on identical input:
+
+```powershell
+py -3 practical-4-python/clean.py
+py -3 practical-4-python/compare_refactor.py
+```
+
+Expected comparison output:
+
+```text
+Original:   {'total': 185.0, 'units': 3, 'average': 61.67}
+Refactored: {'total': 185.0, 'units': 3, 'average': 61.67}
+Behavior preserved: True
+```
+
+Run the verification tests:
+
+```powershell
+py -3 -m unittest discover -s practical-4-python -p test_clean.py -v
+```
+
+The test command should report `Ran 3 tests` and `OK`. For the lab record,
+capture the original code, Copilot Chat prompt/refactoring explanation,
+documented `clean.py`, comparison output, and passing tests with **Win+Shift+S**.
+
 ## Practical 3: AI-assisted debugging (Java)
 
 The original practical asks for `.py` files, but this repository's practicals

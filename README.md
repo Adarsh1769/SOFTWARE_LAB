@@ -1,5 +1,58 @@
 # AI Code Assistant Lab: GitHub Copilot and Code Comparison
 
+## Java version
+
+This lab also includes a Java version in `java-lab/`. It compares an
+AI-generated grade classifier with a manually written implementation, using
+the same scores and validation rules. The AI candidate separates validation
+into a helper; the manual candidate keeps the implementation compact.
+
+To perform the Java experiment with GitHub Copilot, open `java-lab/AiCandidate.java`
+in VS Code, open Copilot Chat, and submit this prompt. Review the generated
+code, apply it to the file, and run the comparison and checks again:
+
+> Write a Java class named AiCandidate with a public static getGrade(double
+> score) method. Accept finite scores from 0 through 100; return A for 90+,
+> B for 80-89, C for 70-79, D for 60-69, and F below 60. Throw
+> IllegalArgumentException for non-finite or out-of-range values. Use clear
+> type-safe Java and include a short class comment.
+
+From the lab folder, compile and run the comparison and dependency-free checks:
+
+```powershell
+Set-Location java-lab
+javac AiCandidate.java ManualCandidate.java Main.java GradeClassifierTest.java
+java Main
+java GradeClassifierTest
+```
+
+The comparison should report `Matching outputs: 5/5`; the check program should
+report `Passed 18 Java checks.` No Java testing framework or third-party
+dependencies are needed. Java 8 or newer is required.
+
+Expected comparison output:
+
+```text
+AI Code Assistant Lab: Java Grade Classifier Comparison
+--------------------------------------------------------------
+Score     AI candidate      Manual      Result
+--------------------------------------------------------------
+95        A                 A           PASS
+82        B                 B           PASS
+74        C                 C           PASS
+63        D                 D           PASS
+40        F                 F           PASS
+--------------------------------------------------------------
+Matching outputs: 5/5
+Both implementations use the same input-validation rules.
+```
+
+For screenshots, capture the Copilot prompt and generated Java code, the
+terminal showing `Matching outputs: 5/5`, and the terminal showing
+`Passed 18 Java checks.` Use **Win+Shift+S** to take screenshots.
+
+## Python version
+
 ## Aim
 
 Set up GitHub Copilot in Visual Studio Code, use an AI assistant to produce a
@@ -14,7 +67,7 @@ docstrings. The manual candidate keeps the same validation and grading behavior
 in one compact function. The comparison program checks both against identical
 scores; the tests also exercise grade boundaries and invalid inputs.
 
-The checked-in AI candidate is a runnable example generated for this lab. To
+The checked-in Python AI candidate is a runnable example generated for this lab. To
 make the experiment specific to the GitHub Copilot extension you install, use
 the prompt below in Copilot Chat and replace the contents of
 `ai_candidate.py` with its result. Keep the function name `get_grade` and run

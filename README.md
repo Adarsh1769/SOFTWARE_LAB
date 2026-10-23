@@ -1,5 +1,99 @@
 # AI Code Assistant Lab: GitHub Copilot and Code Comparison
 
+## Mini Project: End-to-end AI-assisted expense tracker
+
+This mini project follows the software development lifecycle to build a
+standard-library Python CLI for recording expenses, listing them, and
+summarizing totals. Data is stored locally as JSON, and monetary values use
+`Decimal`. The project does not connect to a bank or cloud service.
+
+### Stage 1 - Requirements: `requirements.md`
+
+Review `mini-project-expense-tracker/requirements.md` for the goal, six
+functional requirements, constraints, and out-of-scope features. To develop
+or refine requirements with GitHub Copilot, Windsurf, or Ollama, prompt:
+
+> Write concise, testable requirements for a local command-line personal
+> expense tracker. Include add, list, category summary, local persistence,
+> date and amount validation, and explicit out-of-scope features. Use stable
+> requirement IDs. Do not add cloud accounts, bank integration, or features
+> not requested.
+
+Check the resulting requirements with a reviewer before moving to design.
+
+### Stage 2 - Design: `design.md`
+
+`mini-project-expense-tracker/design.md` describes the module boundaries, JSON
+data format, commands, errors, and default storage location. Use the AI
+assistant to review this design against the requirements:
+
+> Review requirements.md and propose a minimal Python standard-library
+> architecture for a CLI expense tracker. Define validated data fields,
+> commands, persistence format, error behavior, and test cases. Preserve
+> decimal money precision and do not add features outside the requirements.
+
+### Stage 3 - Implementation: `models.py`, `storage.py`, `cli.py`
+
+- `models.py` validates expenses, dates, and decimal amounts.
+- `storage.py` reads and atomically writes the JSON data file; malformed data
+  is reported rather than silently discarded.
+- `cli.py` implements the `add`, `list`, and `summary` commands.
+
+An AI-assisted implementation/review prompt is:
+
+> Implement the approved expense tracker design using only the Python
+> standard library. Keep models.py, storage.py, and cli.py responsibilities
+> separate. Use Decimal for money, validate all input, preserve existing data
+> on write errors, and report corrupt JSON clearly. Do not add unrequested
+> features. Explain how each requirement maps to code.
+
+Review generated code against the requirements and tests before accepting it.
+
+### Stage 4 - Testing: `test_expenses.py`
+
+`mini-project-expense-tracker/test_expenses.py` covers positive and invalid
+amounts, blank fields, strict ISO dates, save/load round trips, corrupt JSON,
+and end-to-end CLI add/list/summary behavior. For AI-generated test ideas,
+prompt:
+
+> Generate unittest cases for models.py, storage.py, and cli.py. Cover each
+> requirement, invalid inputs, malformed persisted JSON, decimal precision,
+> and the add/list/summary flow using a temporary data file. Do not weaken
+> assertions or change application behavior to make tests pass.
+
+#### Test run
+
+From the repository root, run:
+
+```powershell
+py -3 -m unittest discover -s mini-project-expense-tracker -p test_expenses.py -v
+```
+
+Expected result: **Ran 7 tests** and **OK**.
+
+### Stage 5 - Run the application (CLI demo)
+
+Use a temporary data file so the demonstration does not overwrite personal
+expense data. In PowerShell at the repository root, create the demo path and
+add two sample expenses:
+
+```powershell
+$demoFile = Join-Path $env:TEMP "expense-tracker-demo.json"
+py -3 mini-project-expense-tracker\cli.py --data-file $demoFile add --amount 12.50 --category Food --description "Lunch" --date 2026-03-05
+py -3 mini-project-expense-tracker\cli.py --data-file $demoFile add --amount 3.25 --category Travel --description "Bus fare" --date 2026-03-05
+py -3 mini-project-expense-tracker\cli.py --data-file $demoFile list
+py -3 mini-project-expense-tracker\cli.py --data-file $demoFile summary
+```
+
+The summary should show `Total: 15.75`, with `Food: 12.50` and
+`Travel: 3.25`. The demo file is in the Windows temporary directory and can be
+removed after the demonstration with `Remove-Item $demoFile`.
+
+The prompts above cover AI assistance through requirements, design,
+implementation, and test generation. Record the reviewed AI suggestions,
+changes made, test output, and CLI output in the project report; the AI output
+is a proposal and must be checked against the requirements.
+
 ## Practical 11: AI-based CI/CD build log analysis
 
 This practical investigates a reproducible unit-test failure in a small

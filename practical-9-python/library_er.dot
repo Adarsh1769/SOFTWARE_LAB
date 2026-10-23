@@ -1,0 +1,85 @@
+digraph LibraryER {
+    graph [
+        label="Library Lending System - Entity Relationship Diagram"
+        labelloc="t"
+        fontsize=20
+        rankdir=LR
+        bgcolor="white"
+        nodesep=0.55
+        ranksep=0.8
+    ];
+    node [
+        shape=plain
+        fontname="Arial"
+        fontsize=10
+    ];
+    edge [
+        dir=none
+        color="#475569"
+        fontname="Arial"
+        fontsize=9
+    ];
+
+    MEMBER [label=<
+        <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6">
+            <TR><TD BGCOLOR="#dbeafe"><B>MEMBER</B></TD></TR>
+            <TR><TD ALIGN="LEFT"><B>PK</B> member_id</TD></TR>
+            <TR><TD ALIGN="LEFT">full_name</TD></TR>
+            <TR><TD ALIGN="LEFT">email (unique)</TD></TR>
+            <TR><TD ALIGN="LEFT">joined_on</TD></TR>
+        </TABLE>
+    >];
+
+    BOOK [label=<
+        <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6">
+            <TR><TD BGCOLOR="#dcfce7"><B>BOOK</B></TD></TR>
+            <TR><TD ALIGN="LEFT"><B>PK</B> book_id</TD></TR>
+            <TR><TD ALIGN="LEFT">isbn (unique)</TD></TR>
+            <TR><TD ALIGN="LEFT">title</TD></TR>
+            <TR><TD ALIGN="LEFT">published_year</TD></TR>
+        </TABLE>
+    >];
+
+    AUTHOR [label=<
+        <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6">
+            <TR><TD BGCOLOR="#fef3c7"><B>AUTHOR</B></TD></TR>
+            <TR><TD ALIGN="LEFT"><B>PK</B> author_id</TD></TR>
+            <TR><TD ALIGN="LEFT">full_name</TD></TR>
+        </TABLE>
+    >];
+
+    BOOK_AUTHOR [label=<
+        <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6">
+            <TR><TD BGCOLOR="#ede9fe"><B>BOOK_AUTHOR</B></TD></TR>
+            <TR><TD ALIGN="LEFT"><B>PK, FK</B> book_id</TD></TR>
+            <TR><TD ALIGN="LEFT"><B>PK, FK</B> author_id</TD></TR>
+        </TABLE>
+    >];
+
+    COPY [label=<
+        <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6">
+            <TR><TD BGCOLOR="#cffafe"><B>COPY</B></TD></TR>
+            <TR><TD ALIGN="LEFT"><B>PK</B> copy_id</TD></TR>
+            <TR><TD ALIGN="LEFT"><B>FK</B> book_id</TD></TR>
+            <TR><TD ALIGN="LEFT">status</TD></TR>
+        </TABLE>
+    >];
+
+    LOAN [label=<
+        <TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="6">
+            <TR><TD BGCOLOR="#fee2e2"><B>LOAN</B></TD></TR>
+            <TR><TD ALIGN="LEFT"><B>PK</B> loan_id</TD></TR>
+            <TR><TD ALIGN="LEFT"><B>FK</B> copy_id</TD></TR>
+            <TR><TD ALIGN="LEFT"><B>FK</B> member_id</TD></TR>
+            <TR><TD ALIGN="LEFT">borrowed_on</TD></TR>
+            <TR><TD ALIGN="LEFT">due_on</TD></TR>
+            <TR><TD ALIGN="LEFT">returned_on (optional)</TD></TR>
+        </TABLE>
+    >];
+
+    BOOK -> COPY [label="1 to 0..*"];
+    MEMBER -> LOAN [label="1 to 0..*"];
+    COPY -> LOAN [label="1 to 0..* over time"];
+    BOOK -> BOOK_AUTHOR [label="1 to 0..*"];
+    AUTHOR -> BOOK_AUTHOR [label="1 to 0..*"];
+}

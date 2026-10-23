@@ -1,0 +1,23 @@
+Library lending system - ER diagram requirements
+
+Create an entity-relationship diagram for a library lending system with these
+entities and attributes:
+
+- MEMBER: member_id (primary key), full_name, email (unique), joined_on
+- BOOK: book_id (primary key), isbn (unique), title, published_year
+- AUTHOR: author_id (primary key), full_name
+- BOOK_AUTHOR: book_id and author_id form a composite primary key and are
+  foreign keys to BOOK and AUTHOR
+- COPY: copy_id (primary key), book_id (foreign key), status
+- LOAN: loan_id (primary key), copy_id (foreign key), member_id (foreign key),
+  borrowed_on, due_on, returned_on (optional)
+
+Show these relationships and cardinalities:
+
+- A BOOK can have zero or many COPY records; each COPY belongs to exactly one
+  BOOK.
+- A MEMBER can have zero or many LOAN records; each LOAN belongs to exactly
+  one MEMBER.
+- A COPY can appear in zero or many LOAN records over time; each LOAN refers
+  to exactly one COPY.
+- BOOK and AUTHOR have a many-to-many relationship represented by BOOK_AUTHOR.

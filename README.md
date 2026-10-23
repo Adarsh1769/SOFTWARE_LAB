@@ -1,5 +1,60 @@
 # AI Code Assistant Lab: GitHub Copilot and Code Comparison
 
+## Practical 10: AI-assisted automated UI testing with Selenium
+
+This practical uses Selenium to check a local demonstration login page. The
+page is a client-side test fixture only: it is not connected to a server and
+must not be used as real authentication. The suite checks valid and invalid
+credentials and browser-native form validation.
+
+### Step 1 - Page under test: `login.html`
+
+Open `practical-10-python/login.html`. It has required email and password
+fields, an HTML email-format constraint, and a client-side demo response for
+one fixed credential pair. To generate a Selenium suite with GitHub Copilot,
+Windsurf, or Ollama, ask the AI tool:
+
+> Write Python Selenium unittest cases for login.html. Check the valid demo
+> credentials, wrong password, unknown email, empty required fields, and
+> malformed email using browser validation. Assert the user-visible result for
+> each case. Use headless Chrome and Selenium Manager; do not add a real
+> authentication backend.
+
+### Step 2 - Selenium test suite: `test_login_ui.py`
+
+Review `practical-10-python/test_login_ui.py`. It includes five tests: valid
+credentials, wrong password, unknown email, empty required fields, and a
+malformed email. Install the test dependency from the lab root:
+
+```powershell
+py -3 -m pip install -r practical-10-python\requirements.txt
+```
+
+Chrome must be installed. Selenium Manager locates or downloads the
+corresponding ChromeDriver when the suite starts, which may require network
+access on the first run.
+
+### Step 3 - Run the tests
+
+From the lab root, run:
+
+```powershell
+py -3 -m unittest discover -s practical-10-python -p test_login_ui.py -v
+```
+
+Expected result: **Ran 5 tests** and **OK**.
+
+### Step 4 - Accuracy of the test cases
+
+Compare each test with the explicit page behavior: only the demo credentials
+show the welcome message; wrong credentials show the error message; empty
+fields and malformed email are blocked by native browser validation before the
+form handler runs. The five passing tests match these five stated cases
+(5/5 for this fixture). This is example-based coverage, not proof of security
+or correctness for a production authentication system. If AI-generated tests
+differ from the included examples, review each expected result against the
+page and rerun the suite before reporting its accuracy.
+
 ## Practical 9: AI-generated ER diagram with Graphviz
 
 This practical converts a textual library-system description into Graphviz

@@ -1,5 +1,80 @@
 # AI Code Assistant Lab: GitHub Copilot and Code Comparison
 
+## Practical 7: AI-generated API documentation (Python)
+
+This practical uses a small WSGI backend and a local Ollama model to generate
+API documentation, then validates the documented behavior with five tests.
+The example needs only Python's standard library for the API and tests.
+
+### Step 1 - Backend code: `app.py`
+
+Open `practical-7-python/app.py`. It implements `GET /api/products` with an
+optional `category` query parameter and `POST /api/products` with JSON input.
+It returns **404** for unknown routes, **201** for a valid product request, and
+**422** for invalid JSON or product fields. The example does not persist
+created products.
+
+### Step 2 - Documentation generator: `generate_docs.py`
+
+The generator reads `app.py` and sends it to a local Ollama model. Install
+[Ollama](https://ollama.com/) and download the default model once:
+
+```powershell
+ollama pull llama3.2
+```
+
+Alternatively, set `OLLAMA_MODEL` to a model already available locally. To
+generate docs with GitHub Copilot or Windsurf instead, use this prompt with
+`app.py` and save the reviewed result as `practical-7-python/API.md`:
+
+> Generate concise Markdown API documentation from app.py only. Document every
+> route, HTTP method, optional query parameter, JSON request and response,
+> status code, validation rule, and persistence behavior. Do not invent
+> behavior. Include examples for the 404, 201, and 422 responses.
+
+### Step 3 - Generate the documentation
+
+In a VS Code terminal at the lab root, start Ollama if it is not already
+running, then run:
+
+```powershell
+py -3 practical-7-python/generate_docs.py
+```
+
+The generated result is written to `practical-7-python/API.md`. Review the
+model output against the backend before treating it as authoritative.
+
+### Step 4 - Generated documentation: `API.md`
+
+Open `practical-7-python/API.md`. It documents the collection endpoint,
+category filtering, product creation, validation responses, and non-persistent
+sample behavior.
+
+### Step 5 - Validation tests: `test_docs.py`
+
+The five tests exercise the API through its WSGI interface and check the
+documented collection response, query parameter, **201 Created**, **422
+Unprocessable Entity**, and **404 Not Found** behavior.
+
+### Step 6 - Validation run
+
+Run the checks from the lab root:
+
+```powershell
+py -3 -m unittest discover -s practical-7-python -p test_docs.py -v
+```
+
+Expected result:
+
+```text
+Ran 5 tests
+OK
+```
+
+All five checks pass. The documented 404, category query parameter, 201, and
+422 responses behave as written. Capture the generated `API.md` and passing
+test output with **Win+Shift+S** for the lab record.
+
 ## Practical 6: AI-based static code analysis and vulnerability scanning (Python)
 
 This isolated sample uses Bandit to scan a deliberately unsafe calculator,

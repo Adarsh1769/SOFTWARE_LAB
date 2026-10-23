@@ -1,0 +1,24 @@
+name: Practical 11 payment tests
+
+on:
+  push:
+    paths:
+      - ".github/workflows/ci.yml"
+      - "practical-11-python/**"
+  pull_request:
+    paths:
+      - ".github/workflows/ci.yml"
+      - "practical-11-python/**"
+
+jobs:
+  payment-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - name: Run payment tests
+        run: python -m unittest discover -s practical-11-python -p "test_*.py" -v

@@ -1,5 +1,71 @@
 # AI Code Assistant Lab: GitHub Copilot and Code Comparison
 
+## Practical 11: AI-based CI/CD build log analysis
+
+This practical investigates a reproducible unit-test failure in a small
+payment helper. It captures the failure before the fix, analyzes the log
+against the failing source, then verifies the probable cause by correcting the
+total and rerunning the CI test command. The GitHub Actions workflow is scoped
+to Practical 11 files.
+
+### Step 1 - CI pipeline: `.github/workflows/ci.yml`
+
+Review the workflow. It checks out the repository, sets up Python 3.13, and
+runs the Practical 11 `unittest` suite on changes to this workflow or
+`practical-11-python/`.
+
+### Step 2 - Application code: `payments.py`
+
+The failing-run excerpt in `practical-11-python/analysis_report.md` shows the
+original defect in `payments.py`: it calculated tax, then returned only the
+tax amount instead of subtotal plus tax. The current `payments.py` contains
+the corrected implementation verified in Step 6.
+
+### Step 3 - Build log from the failing run: `build.log`
+
+The checked-in log is captured from the failing test run before the fix. It
+reports actual `8.0` and expected `108.0` for a subtotal of 100 and an 8% tax
+rate.
+
+### Step 4 - Log analyser: `analyze_log.py`
+
+The standard-library script extracts the failing test and assertion values
+from the log and checks the failing-revision source for the tax-only return.
+To ask GitHub Copilot, Windsurf, or Ollama to independently analyze the
+evidence, use:
+
+> Analyze build.log alongside the failing-revision payments.py. Identify the
+> first failing test, actual and expected values, and the most likely code
+> defect. Cite the exact calculation in the source as evidence. Do not infer
+> infrastructure causes unless the log supports them. Suggest one minimal
+> correction and a test that would verify it.
+
+### Step 5 - Analysis report
+
+Run the analyzer from the repository root:
+
+```powershell
+py -3 practical-11-python\analyze_log.py
+```
+
+It writes `practical-11-python/analysis_report.md` with the failure, evidence,
+and probable cause. The checked-in report is the result for the sample log.
+
+### Step 6 - Verify the probable cause
+
+The verified current `payments.py` adds the subtotal to the tax. Run the same
+test command used by CI:
+
+```powershell
+py -3 -m unittest discover -s practical-11-python -p "test_*.py" -v
+```
+
+Expected result: **Ran 6 tests** and **OK**. Three payment tests now pass, and
+three analyzer tests check log interpretation. The failing log represents the
+pre-fix revision; a passing rerun after the one-line correction verifies the
+probable cause. This sample does not modify or deliberately fail the
+repository's unrelated practical workflows.
+
 ## Practical 10: AI-assisted automated UI testing with Selenium
 
 This practical uses Selenium to check a local demonstration login page. The

@@ -1,0 +1,15 @@
+Run: python -m unittest test_payments.PaymentTotalTests.test_total_includes_subtotal_and_tax -v
+test_total_includes_subtotal_and_tax (test_payments.PaymentTotalTests.test_total_includes_subtotal_and_tax) ... FAIL
+
+======================================================================
+FAIL: test_total_includes_subtotal_and_tax (test_payments.PaymentTotalTests.test_total_includes_subtotal_and_tax)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "practical-11-python/test_payments.py", line 10, in test_total_includes_subtotal_and_tax
+    self.assertEqual(calculate_total(100.0, 0.08), 108.0)
+AssertionError: 8.0 != 108.0
+
+----------------------------------------------------------------------
+Ran 1 test in 0.001s
+
+FAILED (failures=1)

@@ -1,5 +1,85 @@
 # AI Code Assistant Lab: GitHub Copilot and Code Comparison
 
+## Practical 8: AI-based conversion of requirements into user stories
+
+This practical converts an SRS excerpt into user stories and acceptance
+criteria, evaluates a first draft with a small Python completeness checker,
+then re-checks a revised draft. The checker uses only Python's standard
+library. Its checks are structural and traceability checks, not a substitute
+for reviewing whether acceptance criteria accurately satisfy the SRS.
+
+### Step 1 - Input: `srs_excerpt.txt`
+
+Read `practical-8-python/srs_excerpt.txt`. It defines four account-access
+requirements: account creation, email verification, sign-in and lockout, and
+password reset.
+
+### Step 2 - Draft 1 of the user stories
+
+Open `practical-8-python/draft1_stories.md` for the sample AI-generated first
+draft. To generate your own draft, give the SRS excerpt to GitHub Copilot,
+Windsurf, or Ollama with this prompt:
+
+> Convert this SRS excerpt into one user story for each requirement. Use the
+> format “As a [role], I want [goal], so that [benefit].” Add acceptance
+> criteria as Given/When/Then bullet points. Preserve every stated rule,
+> limit, expiry, and failure case. Label each story with its SRS requirement
+> ID, and do not invent behavior.
+
+Review the AI output and save it as a Markdown file in
+`practical-8-python/` before evaluating it.
+
+### Step 3 - Completeness checker: `check_stories.py`
+
+The checker reads requirement IDs from the SRS and checks each story for
+traceability, the role/goal/benefit format, and explicit `Given:`, `When:`,
+and `Then:` labels in every acceptance-criteria bullet. It reports each check
+and returns a nonzero exit code for an incomplete draft. It checks structure
+and presence, so reviewers must also compare the actual criteria with the
+requirement details.
+
+### Step 4 - Evaluate Draft 1
+
+From the lab root, run:
+
+```powershell
+py -3 practical-8-python\check_stories.py practical-8-python\draft1_stories.md
+```
+
+The example draft is expected to be **INCOMPLETE**: it omits the benefit from
+one story, omits a `Then` criterion from another, and does not cover REQ-04.
+The checker exits with status 1 for this result; that is expected.
+
+### Step 5 - Revised user stories
+
+Open `practical-8-python/revised_stories.md` to see the revised example. It
+covers all four requirement IDs, uses the complete user-story format, and
+includes Given/When/Then criteria. Review that the criteria preserve details
+such as the 12-character password minimum, 24-hour verification link expiry,
+five-attempt/15-minute lockout, and single-use 30-minute reset link.
+
+For your own revision, ask the AI tool to address the failed checks and
+preserve each SRS constraint. Review its changes rather than accepting them
+without checking.
+
+### Step 6 - Re-check the revised stories
+
+Run the checker against the revised example:
+
+```powershell
+py -3 practical-8-python\check_stories.py practical-8-python\revised_stories.md
+```
+
+Expected result: **20/20 checks passed** and `Result: COMPLETE`. Run the
+checker unit tests as an additional verification:
+
+```powershell
+py -3 -m unittest discover -s practical-8-python -p test_check_stories.py -v
+```
+
+Both tests should pass, confirming that the incomplete draft is flagged and
+the revised stories pass the structural completeness checks.
+
 ## Practical 7: AI-generated API documentation (Python)
 
 This practical uses a small WSGI backend and a local Ollama model to generate

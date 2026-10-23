@@ -1,0 +1,20 @@
+SRS excerpt: Account access for the ShopEasy web application
+
+REQ-01: A visitor can create an account using an email address and password.
+The email address must not already belong to another account. Passwords must
+contain at least 12 characters, including at least one uppercase letter and
+one digit. The system must not store a password as plain text.
+
+REQ-02: A newly registered account must verify its email address using a
+verification link sent to that address. The link expires after 24 hours.
+An account cannot sign in until its email address has been verified.
+
+REQ-03: A registered user can sign in with a verified email address and the
+correct password. After five consecutive failed sign-in attempts, the account
+is locked for 15 minutes. A successful sign-in resets the failed-attempt
+counter.
+
+REQ-04: A user who cannot remember their password can request a password
+reset link by email. The reset link expires after 30 minutes and can be used
+only once. After a successful reset, the user can sign in using the new
+password.

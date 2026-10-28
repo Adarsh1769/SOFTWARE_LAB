@@ -94,6 +94,41 @@ implementation, and test generation. Record the reviewed AI suggestions,
 changes made, test output, and CLI output in the project report; the AI output
 is a proposal and must be checked against the requirements.
 
+## Mini Project: End-to-end AI-assisted study planner
+
+This separate project is a local Python CLI for coursework tasks, priorities,
+due dates, completion tracking, and overdue summaries. It is not an expense
+tracker, uses only the standard library, and stores data in a configurable
+JSON file.
+
+The complete workflow, including AI prompts and human review gates for
+requirements, design, implementation, testing, demonstration, and
+maintenance, is documented in
+`mini-project-study-planner/AI_WORKFLOW.md`. Its approved requirements and
+architecture are in `requirements.md` and `design.md`.
+
+Run the focused tests from the repository root:
+
+```powershell
+py -3 -m unittest discover -s mini-project-study-planner -p test_study_planner.py -v
+```
+
+Try the CLI with a temporary data file:
+
+```powershell
+$demoFile = Join-Path $env:TEMP "study-planner-demo.json"
+py -3 mini-project-study-planner\cli.py --data-file $demoFile add --title "Read chapter 4" --course Biology --due-date 2026-12-01 --priority high
+py -3 mini-project-study-planner\cli.py --data-file $demoFile list --status pending
+py -3 mini-project-study-planner\cli.py --data-file $demoFile complete 1
+py -3 mini-project-study-planner\cli.py --data-file $demoFile summary
+Remove-Item $demoFile
+```
+
+The default data path is `~/.study-planner/tasks.json`; use `--data-file` for
+tests and demonstrations to avoid modifying personal data.
+The existing GitHub Actions workflow runs both the Study Planner and Practical
+11 test suites when either project or the workflow changes.
+
 ## Practical 11: AI-based CI/CD build log analysis
 
 This practical investigates a reproducible unit-test failure in a small
